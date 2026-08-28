@@ -1,0 +1,122 @@
+name: New module
+description: Propose a new backend module under src/modules/
+title: "Module: "
+labels: ["enhancement", "module"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A module is a folder under `packages/api/src/modules/<name>/`; the bootstrap auto-discovers
+        `controllers/`, `models/`, `events/`, `queues/` — there is no registry to edit. Read
+        `.agents/adding-a-module.md` and `.agents/conventions.md` before filling this in.
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - P0-critical
+        - P1-high
+        - P2-medium
+        - P3-low
+    validations:
+      required: true
+
+  - type: input
+    id: name
+    attributes:
+      label: Module name
+      description: Singular, lowercase folder name. It becomes the route mount prefix (`note` → `/note`).
+      placeholder: e.g. note
+    validations:
+      required: true
+
+  - type: textarea
+    id: purpose
+    attributes:
+      label: Purpose
+      description: What does this module own? What problem does it solve?
+      placeholder: One or two sentences on the responsibility of this module.
+    validations:
+      required: true
+
+  - type: textarea
+    id: entity
+    attributes:
+      label: Entity / fields
+      description: The domain fields (the `<Name>Fields` contract). Ids are `number`; do NOT list `id`/`createdAt`/`updatedAt` — `BaseModel` provides them.
+      placeholder: |
+        title: string
+        content: string
+        workspaceId: number   # FK, derived server-side, not from the client
+      render: yaml
+    validations:
+      required: true
+
+  - type: textarea
+    id: endpoints
+    attributes:
+      label: Endpoints
+      description: Routes to expose. Collections nest under their parent (`/note/workspace/:workspaceId`); individual items stay flat (`/note/:id`).
+      placeholder: |
+        POST   /note                        create
+        GET    /note/workspace/:workspaceId list by workspace
+        GET    /note/:id                     get one
+        PATCH  /note/:id                     update
+        DELETE /note/:id                     remove
+      render: text
+    validations:
+      required: true
+
+  - type: dropdown
+    id: auth
+    attributes:
+      label: Authentication
+      description: Are the routes behind `@Middleware(AuthenticatedRoute)`?
+      options:
+        - "Yes — all routes require a logged-in user"
+        - "Mixed — some public, some authenticated"
+        - "No — fully public"
+    validations:
+      required: true
+
+  - type: textarea
+    id: authorization
+    attributes:
+      label: Authorization / ownership
+      description: Who may read vs. write each resource? Ownership of the entity a route addresses is the `@Owned(Service)` decorator backed by the service's `getOwned(userId, id)` (`OwnedResolver`). Role/membership route gates ("is a member", "is admin") stay `middlewares/` guards. Name the errors (`<Domain>::Cause`).
+      placeholder: |
+        A note belongs to its author (userId). get/update/remove take @Owned(NoteService): getOwned loads
+        (404 Note::NotFound), reuses WorkspaceService.get for workspace access, then requires caller === author
+        (403 Note::Forbidden).
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Cross-module dependencies
+      description: Which existing services/models does it reuse? (e.g. reusing `WorkspaceService.get` for access + to derive `orgId`.)
+      placeholder: Reuses WorkspaceService.get(userId, workspaceId) for existence + membership check.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: infra
+    attributes:
+      label: Needs events or queues?
+      description: See `.agents/events.md` / `.agents/queues.md`. Leave unchecked for a plain CRUD module.
+      options:
+        - label: Emits or reacts to events (`events/` group)
+        - label: Runs background/retryable work (`queues/` class)
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Definition of done
+      options:
+        - label: "`contracts/domain/` (fields + `<Domain>Error` table via `defineErrors`) added; Input DTOs in `@pollium/contracts/modules/<name>/http.ts` (or `contracts/http/` while server-only), every mutating route validated automatically via `@Body() body: <Input>` (the vite plugin injects the typia validator from the annotation)"
+        - label: "Model `implements <Name>Fields`, extends `BaseModel`, secrets marked `@Hidden`"
+        - label: "Controller uses parameter decorators (`@Owned`, `@CurrentUser`, `@Body`, `@NumericParam`) — no `req` access"
+        - label: "Business logic in the service; throw domain error factories from `defineErrors`, never `throw new Error`"
+        - label: "`npm run typecheck` clean and endpoints verified end-to-end"
