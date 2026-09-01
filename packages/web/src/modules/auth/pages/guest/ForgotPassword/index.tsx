@@ -5,7 +5,7 @@ import {Button, FieldError, Form, Input, Label, TextField} from "@heroui/react";
 import { Link } from "react-router-dom";
 
 
-const SignIn =() => {
+const ForgotPassword =() => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -41,34 +41,21 @@ const SignIn =() => {
         <FieldError />
       </TextField>
 
-      <TextField
-        isRequired
-        name="password"
-        type="password"
-      >
-        <Label>Contraseña</Label>
-        <Input placeholder="Ingresa tu contraseña" />
-        <FieldError />
-      </TextField>
+        <div className="flex gap-2">
+            <Button type="submit">Enviar enlace de recuperación</Button>
+        </div>
 
 
-
-      <div className="flex gap-2">
-        <Button type="submit">Iniciar sesión</Button>
-      </div>
-
-       <div className="flex flex-col gap-2 text-center text-sm">
-        <Link to="/auth/forgot-password" className="text-[var(--accent)] hover:underline">
-          ¿Olvidaste tu contraseña?
-        </Link>
-        <Link to="/auth/sign-up" className="text-[var(--accent)] hover:underline">
-          ¿No tienes cuenta? Regístrate
+      <div className="flex flex-col gap-2 text-center text-sm">
+        <Link to="/auth/sign-in" className="text-[var(--accent)] hover:underline">
+          Volver a iniciar sesión
         </Link>
       </div>
+
 
     </div>
     </Form>
   );
 }
 
-export default SignIn;
+export default ForgotPassword;
