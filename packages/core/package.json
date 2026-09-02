@@ -1,0 +1,28 @@
+{
+  "name": "@app/core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "lint": "oxlint --deny-warnings",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "peerDependencies": {
+    "typeorm": "^1.0.0"
+  },
+  "dependencies": {
+    "@app/contracts": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "oxlint": "^1.71.0",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^1.0.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.10"
+  }
+}
