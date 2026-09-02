@@ -16,8 +16,7 @@
     "sourceMap": true,
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"],
-      "@tests/*": ["tests/*"],
+      "@/*": ["src/*"]
     }
   }
 }

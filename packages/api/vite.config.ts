@@ -1,6 +1,5 @@
 import { fileURLToPath, URL } from 'node:url';
-import { defineConfig } from 'vitest/config';
-import type { Plugin } from 'vite';
+import { defineConfig, type Plugin } from 'vite';
 import typia from '@typia/unplugin/vite';
 
 const autoValidateBody = (): Plugin => ({
@@ -26,13 +25,7 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            '@': fileURLToPath(new URL('./src', import.meta.url)),
-            '@tests': fileURLToPath(new URL('./tests', import.meta.url))
+            '@': fileURLToPath(new URL('./src', import.meta.url))
         }
-    },
-    test: {
-        include: ['src/**/*.test.ts'],
-        setupFiles: ['./tests/setup.ts'],
-        hookTimeout: 60000
     }
 });

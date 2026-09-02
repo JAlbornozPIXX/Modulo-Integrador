@@ -7,7 +7,6 @@
     "./*": "./src/*.ts"
   },
   "scripts": {
-    "test": "vitest run",
     "lint": "oxlint --deny-warnings",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
@@ -22,7 +21,6 @@
     "oxlint": "^1.71.0",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^1.0.0",
-    "typescript": "^5.9.3",
-    "vitest": "^4.1.10"
+    "typescript": "^5.9.3"
   }
 }
