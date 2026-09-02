@@ -2,8 +2,6 @@ import { readdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import type BaseController from '@/shared/controllers/BaseController';
-import type BaseGateway from '@/shared/gateways/BaseGateway';
-import type BaseQueue from '@/shared/queues/BaseQueue';
 
 export interface MountedController{
     prefix: string;
@@ -14,8 +12,6 @@ export interface Discovered{
     controllers: MountedController[];
     entities: Function[];
     events: Array<new () => object>;
-    queues: Array<new () => BaseQueue<unknown>>;
-    gateways: Array<new () => BaseGateway>;
 }
 
 export default class ModuleDiscovery{
@@ -30,9 +26,7 @@ export default class ModuleDiscovery{
         const discovered: Discovered = {
             controllers: [],
             entities: [],
-            events: [],
-            queues: [],
-            gateways: []
+            events: []
         };
 
         for(const name of moduleNames){
@@ -41,8 +35,6 @@ export default class ModuleDiscovery{
             }
             discovered.entities.push(...await this.#loadDefaults<Function>(name, 'models'));
             discovered.events.push(...await this.#loadDefaults<new () => object>(name, 'events'));
-            discovered.queues.push(...await this.#loadDefaults<new () => BaseQueue<unknown>>(name, 'queues'));
-            discovered.gateways.push(...await this.#loadDefaults<new () => BaseGateway>(name, 'gateways'));
         }
 
         return discovered;

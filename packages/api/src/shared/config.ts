@@ -21,15 +21,6 @@ export const config = {
         pretty: optionalEnv('LOG_PRETTY') === 'true'
     },
 
-    redis: {
-        host: requiredEnv('REDIS_HOST'),
-        port: Number(requiredEnv('REDIS_PORT'))
-    },
-
-    queue: {
-        concurrency: Number(optionalEnv('QUEUE_CONCURRENCY') ?? 6)
-    },
-
     storage: {
         endpoint: requiredEnv('STORAGE_ENDPOINT'),
         region: optionalEnv('STORAGE_REGION') ?? 'us-east-1',
