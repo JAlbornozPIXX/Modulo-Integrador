@@ -5,7 +5,9 @@
     "dev": "vite-node --watch src/server.ts",
     "lint": "oxlint --deny-warnings",
     "start": "vite-node src/server.ts",
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "migrate": "vite-node scripts/migrate.ts",
+    "print-schema": "vite-node scripts/print-schema.ts"
   },
   "dependencies": {
     "@app/contracts": "*",
