@@ -106,17 +106,8 @@ body:
     attributes:
       label: Needs events or queues?
       description: See `.agents/events.md` / `.agents/queues.md`. Leave unchecked for a plain CRUD module.
-      options:
-        - label: Emits or reacts to events (`events/` group)
-        - label: Runs background/retryable work (`queues/` class)
 
   - type: checkboxes
     id: checklist
     attributes:
       label: Definition of done
-      options:
-        - label: "`contracts/domain/` (fields + `<Domain>Error` table via `defineErrors`) added; Input DTOs in `@pollium/contracts/modules/<name>/http.ts` (or `contracts/http/` while server-only), every mutating route validated automatically via `@Body() body: <Input>` (the vite plugin injects the typia validator from the annotation)"
-        - label: "Model `implements <Name>Fields`, extends `BaseModel`, secrets marked `@Hidden`"
-        - label: "Controller uses parameter decorators (`@Owned`, `@CurrentUser`, `@Body`, `@NumericParam`) — no `req` access"
-        - label: "Business logic in the service; throw domain error factories from `defineErrors`, never `throw new Error`"
-        - label: "`npm run typecheck` clean and endpoints verified end-to-end"
