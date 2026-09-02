@@ -10,18 +10,6 @@ export interface ErrorTable{
 export type ErrorCode<T extends ErrorTable> =
     `${T['domain']}::${Extract<keyof T['causes'], string>}`;
 
-export const GatewayErrors = {
-    domain: 'Gateway',
-    causes: {
-        MissingChannel: 500,
-        MalformedFrame: 400,
-        UnknownMessageType: 400,
-        Internal: 500
-    }
-} as const satisfies ErrorTable;
-
-export type GatewayErrorCode = ErrorCode<typeof GatewayErrors>;
-
 export const RateLimitErrors = {
     domain: 'RateLimit',
     causes: {

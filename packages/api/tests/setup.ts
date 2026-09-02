@@ -10,8 +10,6 @@ Object.assign(process.env, {
     CORS_ORIGIN: 'http://localhost:5173',
     LOG_LEVEL: 'silent',
     LOG_PRETTY: 'false',
-    REDIS_HOST: 'localhost',
-    REDIS_PORT: '6389',
     STORAGE_ENDPOINT: 'http://localhost:9010',
     STORAGE_ACCESS_KEY: 'test',
     STORAGE_SECRET_KEY: 'test',
@@ -25,10 +23,8 @@ await client.connect();
 await client.query(`CREATE SCHEMA IF NOT EXISTS "${schema}"`);
 await client.end();
 
-const { default: BaseQueue } = await import('@/shared/queues/BaseQueue');
 const { objectStorage } = await import('@/shared/storage/ObjectStorage');
 
-vi.spyOn(BaseQueue.prototype, 'add').mockResolvedValue();
 vi.spyOn(objectStorage, 'put').mockResolvedValue();
 vi.spyOn(objectStorage, 'putImmutable').mockResolvedValue();
 vi.spyOn(objectStorage, 'delete').mockResolvedValue();

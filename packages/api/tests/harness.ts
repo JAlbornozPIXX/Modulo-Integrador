@@ -2,7 +2,6 @@ import { afterAll, afterEach, beforeAll, beforeEach, vi } from 'vitest';
 import type { FastifyInstance } from 'fastify';
 import type { DataSource } from 'typeorm';
 import Application from '@/core/Application';
-import BaseQueue from '@/shared/queues/BaseQueue';
 import { objectStorage } from '@/shared/storage/ObjectStorage';
 import { config } from '@/shared/config';
 import { ConfigError } from '@app/core/errors/ConfigError';
@@ -36,7 +35,7 @@ const truncateAll = async (dataSource: DataSource) => {
 
 export const createTestApp = async (): Promise<TestApp> => {
     const application = new Application();
-    const app = await application.build({ queues: false });
+    const app = await application.build();
     const dataSource = application.dataSource!;
 
     return {
@@ -56,7 +55,6 @@ export const useApp = (): TestApp => {
     afterAll(() => ctx.close());
     beforeEach(async () => {
         // Re-stubbed per test, because a suite that restores its own mocks also restores these.
-        vi.spyOn(BaseQueue.prototype, 'add').mockResolvedValue();
         vi.spyOn(objectStorage, 'put').mockResolvedValue();
         vi.spyOn(objectStorage, 'putImmutable').mockResolvedValue();
         vi.spyOn(objectStorage, 'delete').mockResolvedValue();
