@@ -10,6 +10,7 @@ const apiUrl = optionalEnv('API_URL') ?? `http://localhost:${port}`;
 export const config = {
     port,
     apiUrl,
+    jwtSecret: requiredEnv('JWT_SECRET'),
     databaseUrl: requiredEnv('DATABASE_URL'),
     databaseSchema: optionalEnv('DATABASE_SCHEMA'),
     databaseSynchronize: optionalEnv('DATABASE_SYNCHRONIZE') !== 'false',
